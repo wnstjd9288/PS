@@ -1,6 +1,8 @@
 #include <stdio.h>
+<<<<<<< HEAD
 
-int main()
+    int
+    main()
 {
     int n;
     int que[10000001] = {
