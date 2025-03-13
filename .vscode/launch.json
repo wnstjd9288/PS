@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Develop/PS/test",
-      "program": "c:/Develop/PS/test/build/Debug/outDebug",
+      "cwd": "c:/PS/PS/SWAG/ProblemSet_1",
+      "program": "c:/PS/PS/SWAG/ProblemSet_1/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
