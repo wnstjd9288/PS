@@ -3,7 +3,8 @@
         {
             "name": "windows-gcc-x64",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:\\Develop\\tools\\mingw64\\include",
             ],
             "defines": [
                 "_DEBUG",
