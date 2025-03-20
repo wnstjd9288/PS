@@ -1,25 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<pair<int, int>> a[300001];
+vector<int> a[300001];
+long long visited[300001] = {
+    0,
+};
+void dfs(int now)
+{
+    if (visited[now])
+        return;
+    visited[now] = 1;
+    for (int i = 0; i < a[now].size(); i++)
+    {
+        if (visited[a[now][i]])
+            continue;
+        dfs(a[now][i]);
+        visited[now] += visited[a[now][i]];
+    }
+    return;
+}
 int main()
 {
-    int n;
-    scanf("%d", &n);
+    long long n, cnt = 0;
+    scanf("%lld", &n);
     for (int i = 0; i < n - 1; i++)
     {
         int x, y;
         scanf("%d %d", &x, &y);
-        a[x].push_back(make_pair(y, a[x].size() + 1));
-        a[y].push_back(make_pair(x, a[y].size() + 1));
+        a[x].push_back(y);
+        a[y].push_back(x);
     }
-    printf("res\n");
-    for (int i = 1; i <= n; i++)
+    dfs(1);
+
+    for (int i = 2; i <= n; i++)
     {
-        for (int j = 0; j < a[i].size(); j++)
-        {
-            printf("(%d,%d) ", a[i][j].first, a[i][j].second);
-        }
-        puts("");
+        cnt += n * (n - 1) / 2 - (n - visited[i]) * (n - visited[i] - 1) / 2;
     }
+    printf("%lld", cnt);
     return 0;
 }
