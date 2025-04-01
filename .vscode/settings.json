@@ -78,6 +78,11 @@
     "regex": "cpp",
     "valarray": "cpp",
     "bitset": "cpp",
-    "complex": "cpp"
+    "complex": "cpp",
+    "barrier": "cpp",
+    "chrono": "cpp",
+    "random": "cpp",
+    "latch": "cpp",
+    "semaphore": "cpp"
   }
 }
