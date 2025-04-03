@@ -83,6 +83,7 @@
     "chrono": "cpp",
     "random": "cpp",
     "latch": "cpp",
-    "semaphore": "cpp"
+    "semaphore": "cpp",
+    "type_traits": "cpp"
   }
 }
