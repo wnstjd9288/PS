@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/PS/PS/SWAG/ProblemSet_1",
-      "program": "c:/PS/PS/SWAG/ProblemSet_1/build/Debug/outDebug",
+      "cwd": "c:/PS/SWAG/Random Marathon_4",
+      "program": "c:/PS/SWAG/Random Marathon_4/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
