@@ -3,13 +3,34 @@ using namespace std;
 int s[200001] = {
     0,
 };
+int visited[200001] = {
+    0,
+};
+int result[200001] = {
+    0,
+};
 void MEX(int n)
 {
-    stack<int> t;
-    t.push(s[n - 2]);
-    for (int i = n - 2; i >= 1; i--)
+    int cnt = 1;
+    for (int i = 1; i < n; i++)
     {
-        if (n - 2)
+        if (s[i] != s[i - 1])
+        {
+            result[i] = s[i - 1];
+            visited[s[i - 1]] = 1;
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (result[i])
+            printf("%d ", result[i]);
+        else
+        {
+            while (visited[cnt])
+                cnt++;
+            printf("%d ", cnt);
+            cnt++;
+        }
     }
 }
 int main()
@@ -19,6 +40,8 @@ int main()
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &s[i]);
+        if (i && s[i - 1] > s[i])
+            flag = 1;
         if (s[i] > i + 2)
             flag = 1;
     }
@@ -27,6 +50,9 @@ int main()
     if (flag)
         printf("No");
     else
+    {
+        printf("Yes\n");
         MEX(n);
+    }
     return 0;
 }
