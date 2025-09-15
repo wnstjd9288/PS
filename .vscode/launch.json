@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/PS/SWAG/Random Marathon_4",
-      "program": "c:/PS/SWAG/Random Marathon_4/build/Debug/outDebug",
+      "cwd": "c:/PS/Baekjoon/11660.구간합구하기_5",
+      "program": "c:/PS/Baekjoon/11660.구간합구하기_5/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
