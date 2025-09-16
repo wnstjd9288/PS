@@ -15,52 +15,40 @@ int main()
     {
         scanf("%lld", &b[i]);
     }
-    if (a[0] * a[2] > 0)
+    if (a[0] > a[2])
     {
-        if (abs(a[0]) > abs(a[2]))
+        change[0] = a[0];
+        change[1] = a[1];
+        a[0] = a[2];
+        a[1] = a[3];
+        a[2] = change[0];
+        a[3] = change[1];
+    }
+    else if (a[0] == a[2])
+    {
+        if (a[1] > a[3])
         {
-            change[0] = a[0];
-            change[1] = a[1];
-            a[0] = a[2];
+            change[0] = a[1];
             a[1] = a[3];
-            a[2] = change[0];
-            a[3] = change[1];
+            a[3] = change[0];
         }
     }
-    else
+    if (b[0] > b[2])
     {
-        if (a[0] > a[2])
-        {
-            change[0] = a[0];
-            change[1] = a[1];
-            a[0] = a[2];
-            a[1] = a[3];
-            a[2] = change[0];
-            a[3] = change[1];
-        }
+        change[0] = b[0];
+        change[1] = b[1];
+        b[0] = b[2];
+        b[1] = b[3];
+        b[2] = change[0];
+        b[3] = change[1];
     }
-    if (b[0] * b[2] > 0)
+    else if (b[0] == b[2])
     {
-        if (abs(b[0]) > abs(b[2]))
+        if (b[1] > b[3])
         {
-            change[0] = b[0];
-            change[1] = b[1];
-            b[0] = b[2];
+            change[0] = b[1];
             b[1] = b[3];
-            b[2] = change[0];
-            b[3] = change[1];
-        }
-    }
-    else
-    {
-        if (b[0] > b[2])
-        {
-            change[0] = b[0];
-            change[1] = b[1];
-            b[0] = b[2];
-            b[1] = b[3];
-            b[2] = change[0];
-            b[3] = change[1];
+            b[3] = change[0];
         }
     }
     long long int dx1, dx2, dy1, dy2;
@@ -156,10 +144,15 @@ int main()
     {
         s = max(a[0], b[0]);
         e = min(a[2], b[2]);
+        if (s > e)
+        {
+            printf("0");
+            return 0;
+        }
         long long int weight, result;
         weight = dx2 * dy1 - dx1 * dy2;
         result = (dx2 * dy1) * a[0] - (dx1 * dy2) * b[0] + (dx2 * dx1) * (b[1] - a[1]);
-        if (weight * s <= result && result <= weight * e)
+        if (min(weight * s, weight * e) <= result && result <= max(weight * s, weight * e))
             printf("1");
         else
             printf("0");
