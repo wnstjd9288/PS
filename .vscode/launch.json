@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/PS/Baekjoon/11660.구간합구하기_5",
-      "program": "c:/PS/Baekjoon/11660.구간합구하기_5/build/Debug/outDebug",
+      "cwd": "c:/PS/PS/SWAG/SWAG_4/Daily_Problem/250919/11003.최솟값찾기",
+      "program": "c:/PS/PS/SWAG/SWAG_4/Daily_Problem/250919/11003.최솟값찾기/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
