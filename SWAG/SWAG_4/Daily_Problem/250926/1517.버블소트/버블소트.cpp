@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<pair<int, int>> arr;
-vector<pair<int, int>> arr_cp;
-int visited[500001];
-int tree[4000001];
-int sum(int s, int e, int n, int x, int y)
+vector<pair<int, int>> arr, arr_s;
+unordered_map<int, int> visited;
+long long tree[4000001];
+long long sum(int s, int e, int n, int x, int y)
 {
-    if (x < s || y > e)
+    if (x > e || y < s)
         return 0;
     if (x <= s && y >= e)
         return tree[n];
@@ -25,21 +24,63 @@ void update(int s, int e, int n, int x)
     update(s, mid, n * 2, x);
     update(mid + 1, e, n * 2 + 1, x);
 }
+int lo_bound(int k, int s, int e)
+{
+    int mid;
+    while (e - s > 0)
+    {
+        mid = (s + e) / 2;
+        if (arr_s[mid].first < k)
+            s = mid + 1;
+        else
+            e = mid;
+    }
+    return e;
+}
+int up_bound(int k, int s, int e)
+{
+
+    int mid;
+    while (e - s > 0)
+    {
+        mid = (s + e) / 2;
+        if (arr_s[mid].first <= k)
+            s = mid + 1;
+        else
+            e = mid;
+    }
+    return e;
+}
 int main()
 {
-    int n, cnt = 0;
+    int n;
+    long long cnt = 0;
     scanf("%d", &n);
-    arr.resize(n + 1);
-    arr_cp.resize(n + 1);
+    arr.resize(n);
+    arr_s.resize(n);
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &arr[i].first);
         arr[i].second = i;
     }
-    copy(arr.begin(), arr.end(), arr_cp.begin());
-    for (int i = n - 1; i >= 0; i--)
+    copy(arr.begin(), arr.end(), arr_s.begin());
+    sort(arr_s.begin(), arr_s.end());
+
+    for (int i = 0; i < n; i++)
     {
-        update(0, n - 1, 1, arr[i]);
-        cnt += sum(0, n - 1, 1, arr[i], n - 1);
+        if (visited[arr_s[i].first])
+            continue;
+        visited[arr_s[i].first] = 1;
+        int start = lo_bound(arr_s[i].first, 0, n);
+        int end = up_bound(arr_s[i].first, 0, n);
+        for (int j = start; j < end; j++)
+        {
+            cnt += sum(0, n - 1, 1, arr_s[j].second, n - 1);
+        }
+        for (int j = start; j < end; j++)
+        {
+            update(0, n - 1, 1, arr_s[j].second);
+        }
     }
+    printf("%lld", cnt);
 }
