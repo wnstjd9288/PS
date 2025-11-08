@@ -4,15 +4,32 @@ int main()
 {
     int t;
     scanf("%d", &t);
-    for (int test = 0; test < t; test++)
+    while (t--)
     {
         int n;
-        int arr[8001], c[8001];
         scanf("%d", &n);
-        for (int i = 0; i < n; i++)
-            scanf("%d", &arr[i]);
-        for (int i = 0; i < n; i++)
-            scanf("%d", &c[i]);
-        
+
+        if (n == 2)
+        {
+            printf("-1\n");
+            continue;
+        }
+
+        if (n == 3)
+        {
+            printf("1 3\n2 3\n");
+            continue;
+        }
+
+        if (n == 4)
+        {
+            printf("1 2\n3 1\n4 1\n");
+            continue;
+        }
+
+        printf("1 2\n2 3\n3 4\n1 %d\n", n);
+
+        for (int i = 5; i < n; i++)
+            printf("2 %d\n", i);
     }
 }

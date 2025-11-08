@@ -2,21 +2,25 @@
 
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++)
+    int t;
+    scanf("%d", &t);
+    while (t--)
     {
-        int arr[4];
-        bool flag = true;
-        for (int j = 0; j < 4; j++)
+        int n;
+        int max = -1;
+        int arr[11] = {
+            0,
+        };
+        scanf("%d", &n);
+        for (int i = 1; i <= n; i++)
         {
-            scanf("%d", &arr[j]);
-            if (j && arr[j] != arr[j - 1])
-                flag = false;
+            scanf("%d", &arr[i]);
+            arr[i] += arr[i - 1];
+            for (int j = 0; j < i; j++)
+            {
+                max = max > (arr[i] - arr[j]) / (i - j) ? max : (arr[i] - arr[j]) / (i - j);
+            }
         }
-        if (flag)
-            printf("YES\n");
-        else
-            printf("NO\n");
+        printf("%d\n",max);
     }
 }

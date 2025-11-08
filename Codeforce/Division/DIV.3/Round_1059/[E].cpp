@@ -1,79 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
+int visited[200001];
 int main()
 {
     int t;
     scanf("%d", &t);
-    for (int test = 0; test < t; test++)
+    while (t--)
     {
-        int n, k, x;
-        int start, end, mid;
-        unordered_map<int, int> m;
-        unordered_map<int, int> result;
-        priority_queue<pair<pair<int, int>, bool>> pq; // <<dis,cod>,l/r(t/f)>
-        vector<int> arr;
-        scanf("%d%d%d", &n, &k, &x);
+        int n, k;
+        vector<int> vec, arr;
+        scanf("%d %d", &n, &k);
         for (int i = 0; i < n; i++)
         {
             int a;
             scanf("%d", &a);
             arr.push_back(a);
+            visited[a]++;
         }
-        sort(arr.begin(), arr.end());
-        pq.push({{arr[0], 0}, false});
-        m[0] = 1;
-        pq.push({{x - arr[n - 1], x}, true});
-        m[x] = 1;
-        for (int i = 1; i < n; i++)
+        int a = -1;
+        for (int i = 1; i <= n; i++)
         {
-            start = arr[i - 1];
-            end = arr[i];
-            mid = (start + end) / 2;
-            if ((start + end) % 2)
+            if (!visited[i])
             {
-                if (!m[mid])
-                {
-                    pq.push({{mid - start, mid}, true});
-                    m[mid] = 1;
-                }
-                if (!m[mid + 1])
-                {
-                    pq.push({{end - (mid + 1), mid + 1}, false});
-                    m[mid + 1] = 1;
-                }
-            }
-            else
-            {
-                if (!m[mid])
-                {
-                    pq.push({{mid - start, mid}, true});
-                    pq.push({{end - mid, mid}, true});
-                    m[mid] = 1;
-                }
+                a = i;
+                break;
             }
         }
-        while (k--)
+        if (a == -1)
+            vec = {arr[n - 3], arr[n - 2], arr[n - 1]};
+        else
         {
-            if (!result[pq.top().first.second])
+            int b = -1;
+            for (int i = 1; i <= n; i++)
             {
-                printf("%d ", pq.top().first.second);
-                result[pq.top().first.second] = 1;
+                if (i != a && i != arr[n - 1])
+                {
+                    b = i;
+                    break;
+                }
             }
-            else
-                k++;
-            pair<pair<int, int>, bool> next = pq.top();
-            pq.pop();
-            next.first.first--;
-            if (next.second)
-                next.first.second--;
-            else
-                next.first.second++;
-            if (!m[next.first.second])
-            {
-                pq.push(next);
-                m[next.first.second] = 1;
-            }
+            vec = {a, b, arr[n - 1]};
+        }
+        for (int i = 0; i < k; i++)
+        {
+            printf("%d ", vec[i % 3]);
         }
         puts("");
+        for (int i = 0; i <= n; i++)
+            visited[i] = 0;
     }
 }

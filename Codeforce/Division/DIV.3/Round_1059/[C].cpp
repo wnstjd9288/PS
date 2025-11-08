@@ -1,31 +1,58 @@
 #include <bits/stdc++.h>
-using namespace std;
+
+int binary(int *arr, int a)
+{
+    int cnt = -1;
+    while (a)
+    {
+        cnt++;
+        arr[cnt] = a % 2;
+        a /= 2;
+    }
+    return cnt;
+}
 int main()
 {
     int t;
     scanf("%d", &t);
-    for (int test = 0; test < t; test++)
+    while (t--)
     {
-        int n;
-        int odd = 0, even = 0;
-        vector<int> arr;
-        scanf("%d", &n);
-        for (int i = 0; i < n; i++)
+        int a, b;
+        int stra[50] = {
+            0,
+        },
+            strb[50] = {
+                0,
+            };
+        int res[50];
+        int result = 0;
+        scanf("%d%d", &a, &b);
+        int alen = binary(stra, a);
+        int blen = binary(strb, b);
+        if (alen < blen)
         {
-            int a;
-            scanf("%d", &a);
-            arr.push_back(a);
-            if (a % 2)
-                odd++;
+            printf("-1\n");
+            continue;
+        }
+        for (int i = 0; i <= alen; i++)
+        {
+            if (strb[i])
+            {
+                res[i] = stra[i] ? 0 : 1;
+            }
             else
-                even++;
+                res[i] = stra[i] ? 1 : 0;
+            if (res[i])
+                result += pow(2, i);
         }
-        if (odd && even)
+        if (result == 0)
+            printf("0\n");
+        else if (result > a)
         {
-            sort(arr.begin(), arr.end());
+            printf("2\n");
+            printf("%d %d\n", result - (int)pow(2, alen), (int)pow(2, alen));
         }
-        for (int i = 0; i < n; i++)
-            printf("%d ", arr[i]);
-        puts("");
+        else
+            printf("1\n%d\n", result);
     }
 }
