@@ -36,8 +36,8 @@ def show_result(G: any):
 
     path_nodes = list(r)
     subG = G.subgraph(path_nodes)
-    plt.figure(figsize=(15, 15))
-    pos = ntx.spring_layout(subG, k=3.0, iterations=200, seed=1, scale=3.0)
+    plt.figure(figsize=(15, 10))
+    pos = ntx.spring_layout(subG, k=3.0, iterations=200, scale=3.0)
     labels = {}
     for node in subG.nodes():
         state = node
@@ -49,8 +49,8 @@ def show_result(G: any):
         labels=labels,
         with_labels=True,
         node_color="skyblue",
-        node_size=1000,
-        font_size=5,
+        node_size=2000,
+        font_size=10,
         arrows=True,
         font_family="monospace",
     )
@@ -76,7 +76,7 @@ def main():
     xy = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
     result = "123456780"
-    s = "768124053"
+    s = "804715263"
     is_can = 0
 
     for i in range(8):

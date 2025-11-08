@@ -76,7 +76,7 @@ int main()
     pair<int, int> xy[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     string result = "123456780";
-    string s = "768124053";
+    string s = "804715263";
     int is_can = 0;
     for (int i = 0; i < 8; i++)
     {
