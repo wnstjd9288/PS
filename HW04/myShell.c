@@ -13,7 +13,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <string.h>
-void func_cd(int token_count, char *tokens[])
+void func_cd(int token_count, char *tokens[]) // cd command
 {
     if (token_count > 2)
     {
@@ -34,7 +34,7 @@ void func_cd(int token_count, char *tokens[])
             perror("cd");
     }
 }
-void func_pwd(int token_count)
+void func_pwd(int token_count) // pwd command
 {
     if (token_count > 1)
     {
@@ -97,74 +97,33 @@ bool run(char *line)
             pipe_index[pipe_count++] = i;
         }
     }
-    if (pipe_count) // case of pipe
+    for (int i = 0; i < pipe_count; i++)
     {
-        for (int i = 0; i < pipe_count; i++)
+        if (pipe_index[i] <= 0 || pipe_index[i] >= token_count - 1) // invailed pipe error
         {
-            if (pipe_index[i] <= 0 || pipe_index[i] >= token_count - 1) // invailed pipe error
-            {
-                fprintf(stderr, "syntax error: invalid pipe\n");
-                return true;
-            }
+            fprintf(stderr, "syntax error: invalid pipe\n");
+            return true;
         }
-        char *cmd[11][100];
-        int p[10][2];
-        memset(cmd, 0, sizeof(cmd));         // init cmd
-        for (int i = 0; i < pipe_count; i++) // active pipe
-            pipe(p[i]);
-        for (int i = 0; i <= pipe_count; i++) // segment command
-        {
-            int start = (i == 0 ? 0 : pipe_index[i - 1] + 1);
-            int end = (i == pipe_count ? token_count : pipe_index[i]);
-
-            int cnt = 0;
-            for (int j = start; j < end; j++)
-                cmd[i][cnt++] = tokens[j];
-
-            cmd[i][cnt] = NULL;
-        }
-
-        int num_cmd = pipe_count + 1; // number of command always pipe_count+1
-        for (int i = 0; i < num_cmd; i++)
-        {
-            int pid = fork();
-            if (pid < 0)
-            {
-                perror("fork");
-                exit(1);
-            }
-            if (pid == 0)
-            {
-                if (i > 0) // connect STDIN to previous pipe
-                {
-                    dup2(p[i - 1][0], STDIN_FILENO);
-                }
-                if (i < num_cmd - 1) // connect STDOUT to next pipe
-                {
-                    dup2(p[i][1], STDOUT_FILENO);
-                }
-
-                for (int k = 0; k < num_cmd - 1; k++) // close all pipe ends in child
-                {
-                    close(p[k][0]);
-                    close(p[k][1]);
-                }
-
-                execvp(cmd[i][0], cmd[i]);
-                perror("execvp");
-                exit(1);
-            }
-        }
-        for (int i = 0; i < num_cmd - 1; i++)
-        {
-            close(p[i][0]);
-            close(p[i][1]);
-        }
-
-        for (int i = 0; i < num_cmd; i++)
-            wait(NULL);
     }
-    else // case of no pipe
+    char *cmd[11][100];
+    int p[10][2];
+    memset(cmd, 0, sizeof(cmd));         // init cmd
+    for (int i = 0; i < pipe_count; i++) // active pipe
+        pipe(p[i]);
+    for (int i = 0; i <= pipe_count; i++) // segment command
+    {
+        int start = (i == 0 ? 0 : pipe_index[i - 1] + 1);
+        int end = (i == pipe_count ? token_count : pipe_index[i]);
+
+        int cnt = 0;
+        for (int j = start; j < end; j++)
+            cmd[i][cnt++] = tokens[j];
+
+        cmd[i][cnt] = NULL;
+    }
+
+    int num_cmd = pipe_count + 1; // number of command always pipe_count+1
+    for (int i = 0; i < num_cmd; i++)
     {
         int pid = fork();
         if (pid < 0)
@@ -174,12 +133,34 @@ bool run(char *line)
         }
         if (pid == 0)
         {
-            execvp(tokens[0], tokens);
+            if (i > 0) // connect STDIN to previous pipe
+            {
+                dup2(p[i - 1][0], STDIN_FILENO);
+            }
+            if (i < num_cmd - 1) // connect STDOUT to next pipe
+            {
+                dup2(p[i][1], STDOUT_FILENO);
+            }
+
+            for (int k = 0; k < num_cmd - 1; k++) // close all pipe ends in child (not close pipe connected STDIO)
+            {
+                close(p[k][0]);
+                close(p[k][1]);
+            }
+
+            execvp(cmd[i][0], cmd[i]);
             perror("execvp");
             exit(1);
         }
-        wait(NULL);
     }
+    for (int i = 0; i < num_cmd - 1; i++) // close all pipe
+    {
+        close(p[i][0]);
+        close(p[i][1]);
+    }
+
+    for (int i = 0; i < num_cmd; i++)
+        wait(NULL);
     return true;
 }
 void print_current_dir_name()
@@ -189,7 +170,7 @@ void print_current_dir_name()
     if (getcwd(buf, sizeof(buf)) != NULL)
     {
         printf("%s $ ", buf);
-        fflush(stdout); // 버퍼 처리
+        fflush(stdout); // handle buffer
     }
     else
     {
