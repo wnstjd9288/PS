@@ -1,47 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 int visited[201][201][201];
-int ma, mb, mc;
+int m_arr[3];
+pair<int, int> mv[] = {
+    {0, 1}, {0, 2}, {1, 0}, {1, 2}, {2, 0}, {2, 1}};
 vector<int> res;
 void bottle(int a, int b, int c)
 {
+
     if (visited[a][b][c])
         return;
     visited[a][b][c] = 1;
-    if (ma - a < b)
-        bottle(ma, a + b - ma, c);
-    else
-        bottle(a + b, 0, c);
-    if (mb - b < a)
-        bottle(a + b - mb, mb, c);
-    else
-        bottle(0, a + b, c);
-
-    if (ma - a < c)
-        bottle(ma, b, a + c - ma);
-    else
-        bottle(a + c, b, 0);
-    if (mc - c < a)
-        bottle(a + c - mc, b, mc);
-    else
-        bottle(0, b, a + c);
-
-    if (mb - b < c)
-        bottle(a, mb, b + c - mb);
-    else
-        bottle(a, b + c, 0);
-    if (mc - c < b)
-        bottle(a, b + c - mc, mc);
-    else
-        bottle(a, 0, b + c);
+    printf("%d %d %d\n",a,b,c);
+    int arr[3] = {a, b, c};
+    for (auto [src, dst] : mv)
+    {
+        if (m_arr[src] - arr[src] < arr[dst])
+        {
+            arr[dst] = arr[src] + arr[dst] - m_arr[src];
+            arr[src] = m_arr[src];
+        }
+        else
+        {
+            arr[src] = arr[src] + arr[dst];
+            arr[dst] = 0;
+        }
+        bottle(arr[0], arr[1], arr[2]);
+    }
 }
 int main()
 {
-    scanf("%d%d%d", &ma, &mb, &mc);
-    bottle(0, 0, mc);
-    for (int i = 0; i <= mb; i++)
+    for (int i = 0; i < 3; i++)
+        scanf("%d", &m_arr[i]);
+    bottle(0, 0, m_arr[2]);
+    for (int i = 0; i <= m_arr[1]; i++)
     {
-        for (int j = 0; j <= mc; j++)
+        for (int j = 0; j <= m_arr[2]; j++)
         {
             if (visited[0][i][j])
                 res.push_back(j);
