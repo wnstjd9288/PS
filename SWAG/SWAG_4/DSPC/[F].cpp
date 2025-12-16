@@ -1,63 +1,91 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<int> arr, arr_o;
-unordered_map<int, int> m;
-unordered_map<int, int> result;
+
 int main()
 {
     int t;
+    vector<int> arr;
+    vector<int> arr_o;
+    unordered_map<int, int> exist;
+    unordered_map<int, int> result;
     scanf("%d", &t);
     for (int i = 0; i < 6; i++)
     {
         int a;
         scanf("%d", &a);
+        arr.push_back(a);
         arr_o.push_back(a);
-        m[a] = 1;
+        exist[a]++;
     }
+    sort(arr.begin(), arr.end());
     arr.erase(unique(arr.begin(), arr.end()), arr.end());
     if (t == 1)
     {
-        for (auto A : arr)
+        int m = -1;
+        int n = arr.size();
+        int start;
+        for (int i = 0; i < n; i++)
         {
-            int index = A;
-            while (1)
+            int next = arr[(i + 1) % n] - arr[i];
+            if (next < 0)
+                next += 64;
+            if (m < next)
             {
-                if (!m[(index) % 64 + 1])
+                start = (i + 1) % n;
+                m = next;
+            }
+        }
+        for (int i = start; i < start + n; i++)
+        {
+            for (int j = 1;; j++)
+            {
+                int next = arr[i % n] + j;
+                if (next >= 65)
+                    next -= 64;
+                if (!exist[next])
                 {
-                    result[A] = (index) % 64 + 1;
-                    m[(index) % 64 + 1] = 1;
+                    exist[next]++;
+                    result[arr[i % n]] = next;
                     break;
                 }
-                index++;
             }
         }
         for (int i = 0; i < 6; i++)
-        {
             printf("%d ", result[arr_o[i]]);
-        }
     }
     else
     {
-        for (int i = arr.size() - 1; i >= 0; i--)
+        int m = -1;
+        int n = arr.size();
+        int start;
+        for (int i = 0; i < n; i++)
         {
-            int index = arr[i];
-            while (1)
+            int next = arr[(i + 1) % n] - arr[i];
+            if (next < 0)
+                next += 64;
+            if (m < next)
             {
-                if (index <= 0)
-                    index += 64;
-                if (!m[index])
+                start = i;
+                m = next;
+            }
+        }
+        for (int i = start + n; i > start; i--)
+        {
+            for (int j = 63;; j--)
+            {
+                int next = (arr[i % n] + j);
+                if (next >= 65)
+                    next -= 64;
+                if (!exist[next])
                 {
-                    result[arr[i]] = index;
-                    m[index] = 1;
+                    exist[next]++;
+                    result[arr[i % n]] = next;
                     break;
                 }
-                index--;
             }
         }
         for (int i = 0; i < 6; i++)
-        {
             printf("%d ", result[arr_o[i]]);
-        }
     }
     return 0;
 }
