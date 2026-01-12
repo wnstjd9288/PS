@@ -1,67 +1,58 @@
 #include <bits/stdc++.h>
-using namespace std;
-struct PairHash
-{
-    size_t operator()(const pair<int, int> &p) const
-    {
-        return ((size_t)p.first << 32) ^ (size_t)p.second;
-    }
-};
 
-vector<vector<int>> graph;
-vector<int> weight;
-unordered_map<pair<int, int>, vector<int>, PairHash> pairmap;
+using namespace std;
+
+vector<int> graph[1001];
+int weight[1001];
+int max_w[1001];
 int result = -1;
 int main()
 {
     int n, m;
-    scanf("%d%d", &n, &m);
-    graph.resize(n + 1);
-    weight.resize(n + 1);
-    for (int i = 1; i <= n; i++)
+    scanf("%d %d", &n, &m);
+
+    for (int i = 1; i <= n; ++i)
+    {
         scanf("%d", &weight[i]);
-    for (int i = 1; i <= m; i++)
+        max_w[i] = 0;
+    }
+
+    for (int i = 0; i < m; ++i)
     {
         int u, v;
         scanf("%d %d", &u, &v);
         graph[u].push_back(v);
+        graph[v].push_back(u);
     }
-    // for (int i = 1; i <= n; i++)
-    // {
-    //     printf("%d => ", i);
-    //     for (auto [x, y] : childmap[i])
-    //     {
-    //         if (y)
-    //             printf("%d ", x);
-    //     }
-    //     puts("");
-    // }
-    for (int i = 1; i <= n; i++)
+
+    for (int u = 1; u <= n; u++)
     {
-        if (!graph[i].empty())
-            sort(graph[i].begin(), graph[i].end());
-    }
-    for (int i = 1; i <= n; i++)
-    {
-        int len = graph[i].size();
-        for (int j = 0; j < len - 1; j++)
+        for (int w : graph[u])
         {
-            for (int k = j + 1; k < len; k++)
+            for (int v : graph[w])
             {
-                pairmap[{graph[i][j], graph[i][k]}].push_back(i);
+                if (v == u)
+                    continue;
+
+                if (max_w[v])
+                {
+                    int other = max_w[v];
+                    result = max(result, weight[u] + weight[v] + weight[w] + weight[other]);
+                    if (weight[w] > weight[other])
+                        max_w[v] = w;
+                }
+                else
+                    max_w[v] = w;
             }
         }
-    }
-    for (auto &[x, y] : pairmap)
-    {
-        int len = y.size();
-        for (int i = 0; i < len - 1; i++)
+        for (int w : graph[u])
         {
-            for (int j = i + 1; j < len; j++)
+            for (int v : graph[w])
             {
-                result = max(result, weight[x.first] + weight[x.second] + weight[y[i]] + weight[y[j]]);
+                max_w[v] = 0;
             }
         }
     }
     printf("%d", result);
+    return 0;
 }
