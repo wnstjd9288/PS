@@ -51,6 +51,8 @@ int main()
         pq_min.pop();
     }
     puts("");
+
+    /*
     // 구조체라면?
     priority_queue<grid> pq_grid;
     for (int i = 1; i <= 5; i++)
@@ -63,6 +65,7 @@ int main()
         printf("(%d, %d) ", pq_grid.top().x, pq_grid.top().y);
         pq_grid.pop();
     }
+    */
 
     // 비교자를 직접 생성해 주어야 한다!
     priority_queue<grid, vector<grid>, cmp> pq_grid;
