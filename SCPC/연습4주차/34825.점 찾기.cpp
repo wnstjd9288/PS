@@ -30,5 +30,5 @@ int main()
             printf("%d %d", (a.x + b.x + 1) / 2, (a.y + b.y - 1) / 2);
         else
             printf("%d %d", (a.x + b.x - 1) / 2, (a.y + b.y - 1) / 2);
-        }
+    }
 }
